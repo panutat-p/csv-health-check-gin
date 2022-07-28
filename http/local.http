@@ -1,0 +1,10 @@
+GET http://localhost:8080
+###
+POST http://localhost:8080/upload
+Content-Type: application/json
+Transaction-ID: 32455242
+
+{
+  "file": "aHR0cHM6Ly93d3cueW91dHViZS5jb20sCmh0dHA6Ly93d3cuZ29vZ2xlLmNvbSwKaHR0cHM6Ly93d3cuZmFjZWJvb2suY29tLAp3d3cudHdpdHRlci5jb20sCmh0dHBzOi8vd3d3Lndpa2lwZWRpYS5vcmcsCmh0dHBzOi8vd3d3Lmluc3RhZ3JhbS5jb20sCmh0dHBzOi8vd3d3Lmluc3RhZzc3N3JhbS5jb20sCnd3dy5zYW5vb2suY29tLA=="
+}
+###
