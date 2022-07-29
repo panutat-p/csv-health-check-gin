@@ -10,7 +10,7 @@ go get -u github.com/gin-contrib/cors
 go build \
 		-ldflags "-X main.buildCommit=`git rev-parse --short HEAD` \
 		-X main.buildTime=`date "+%Y-%m-%dT%H:%M:%S%Z:00"`" \
-		-o app
+		-o ./bin/app
 ```
 
 ```shell

@@ -12,13 +12,11 @@ import (
 const PORT = 8080
 
 var (
-	buildTime   = ""
-	buildCommit = ""
+	buildTime = ""
 )
 
 func main() {
 	health.BuildTime = buildTime
-	health.BuildCommit = buildCommit
 
 	r := gin.Default()
 	gin.SetMode(gin.DebugMode) // 🟧 Switch to "release" mode in production

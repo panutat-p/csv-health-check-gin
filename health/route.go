@@ -6,14 +6,12 @@ import (
 )
 
 var (
-	BuildTime   = ""
-	BuildCommit = ""
+	BuildTime = ""
 )
 
 func CheckHealth(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
-		"status":      "healthy",
-		"buildTime":   BuildTime,
-		"buildCommit": BuildCommit,
+		"status":    "healthy",
+		"buildTime": BuildTime,
 	})
 }
