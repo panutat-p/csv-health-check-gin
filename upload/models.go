@@ -1,5 +1,5 @@
 package upload
 
 type File struct {
-	File string `json:"file"`
+	Data string `json:"data"`
 }

@@ -1,17 +1,16 @@
 package upload
 
 import (
+	"bytes"
 	"encoding/base64"
+	"encoding/csv"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
-	"os"
 )
 
-var dir, _ = os.Getwd()
-
-func CreateFile(c *gin.Context) {
+func Handler(c *gin.Context) {
 	var file File
 	if err := c.ShouldBindJSON(&file); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -23,18 +22,33 @@ func CreateFile(c *gin.Context) {
 	txId := c.Request.Header.Get("Transaction-ID")
 	fmt.Println(txId)
 
-	rawDecodedText, err := base64.StdEncoding.DecodeString(file.File)
+	rawDecodedText, err := base64.StdEncoding.DecodeString(file.Data)
 	if err != nil {
 		fmt.Println("🟥 cannot decode base64")
 		fmt.Println(err)
 	}
-	d1 := rawDecodedText
-	err = os.WriteFile(fmt.Sprintf("%s/%s.csv", dir, txId), d1, 0644)
+
+	data, err := Convert(rawDecodedText)
 	if err != nil {
 		log.Println(err)
 	}
 
 	c.JSON(http.StatusCreated, gin.H{
-		"message": "success",
+		"data": data,
 	})
+}
+
+func Convert(data []byte) ([]string, error) {
+	buf := bytes.NewBuffer(data)
+	r := csv.NewReader(buf)
+	sl := make([]string, 0)
+	records, err := r.ReadAll()
+	if err != nil {
+		log.Fatal(err)
+		return nil, err
+	}
+	for _, v := range records {
+		sl = append(sl, v[0])
+	}
+	return sl, nil
 }

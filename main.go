@@ -28,7 +28,7 @@ func main() {
 	r.Use(cors.New(config))
 
 	r.GET("/", health.CheckHealth)
-	r.POST("/upload", upload.CreateFile)
+	r.POST("/upload", upload.Handler)
 
 	err := r.Run(fmt.Sprintf(":%d", PORT))
 	if err != nil {
