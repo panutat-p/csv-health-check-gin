@@ -4,8 +4,9 @@ type File struct {
 	Data string `json:"data"`
 }
 
-type Result struct {
-	Url        string `json:"url"`
-	StatusCode int    `json:"statusCode"`
-	Error      string `json:"error"`
+type ResponsePayload struct {
+	Total            int `json:"total"`
+	Up               int `json:"up"`
+	Down             int `json:"down"`
+	ElapsedTimeMilli int `json:"elapsedTimeMilli"`
 }

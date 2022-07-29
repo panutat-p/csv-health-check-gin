@@ -32,8 +32,7 @@ func main() {
 
 	err := r.Run(fmt.Sprintf(":%d", PORT))
 	if err != nil {
-		log.Println(err)
-		log.Println("🟥 Cannot start web server")
+		log.Fatalln("🟥 Cannot start web server:", err)
 		return
 	}
 }

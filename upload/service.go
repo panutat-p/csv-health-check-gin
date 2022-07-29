@@ -28,22 +28,24 @@ func Convert(data []byte) ([]string, error) {
 	return sl, nil
 }
 
-func Check(ch chan Result, url string) {
+func Check(ch chan bool, url string) {
 	if !strings.HasPrefix(url, "http") {
 		url = fmt.Sprintf("%s%s", "http://", url)
 	}
 	c := &http.Client{
 		Timeout: TIME_OUT,
 	}
-	r, err := c.Get(url)
+	_, err := c.Get(url)
 	if err != nil {
 		if os.IsTimeout(err) {
-			ch <- Result{Url: url, StatusCode: 408, Error: err.Error()}
+			ch <- false
+			log.Println("🟨 request timeout:", err)
 			return
 		}
 
-		ch <- Result{Url: url, StatusCode: 404, Error: err.Error()}
+		ch <- false
+		log.Println("🟨 request failed:", err)
 		return
 	}
-	ch <- Result{Url: url, StatusCode: r.StatusCode, Error: ""}
+	ch <- true
 }
