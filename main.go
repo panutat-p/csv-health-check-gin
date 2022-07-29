@@ -24,7 +24,7 @@ func main() {
 	config := cors.DefaultConfig()
 	config.AllowAllOrigins = true
 	config.AllowMethods = []string{"GET", "POST"}
-	config.AllowHeaders = []string{"Origin", "TransactionID"}
+	config.AllowHeaders = []string{"Access-Control-Allow-Origin", "Content-Type", "Origin", "Transaction-ID"}
 	r.Use(cors.New(config))
 
 	r.GET("/", health.Handler)
