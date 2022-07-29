@@ -24,12 +24,20 @@ func Handler(c *gin.Context) {
 
 	rawDecodedText, err := base64.StdEncoding.DecodeString(file.Data)
 	if err != nil {
-		log.Println("🟧 cannot decode base64:", err)
+		log.Println("🟧 Failed to decode base64:", err)
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
 	}
 
 	data, err := Convert(rawDecodedText)
 	if err != nil {
-		log.Println(err)
+		log.Println("🟧 Failed to convert CSV data:", err)
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		return
 	}
 
 	ch := make(chan bool)
