@@ -1,9 +1,7 @@
 package upload
 
 import (
-	"bytes"
 	"encoding/base64"
-	"encoding/csv"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"log"
@@ -20,7 +18,7 @@ func Handler(c *gin.Context) {
 	}
 
 	txId := c.Request.Header.Get("Transaction-ID")
-	fmt.Println(txId)
+	log.Println("Transaction ID:", txId)
 
 	rawDecodedText, err := base64.StdEncoding.DecodeString(file.Data)
 	if err != nil {
@@ -33,22 +31,18 @@ func Handler(c *gin.Context) {
 		log.Println(err)
 	}
 
-	c.JSON(http.StatusCreated, gin.H{
-		"data": data,
-	})
-}
+	ch := make(chan Result)
+	for _, v := range data {
+		go Check(ch, v)
+	}
 
-func Convert(data []byte) ([]string, error) {
-	buf := bytes.NewBuffer(data)
-	r := csv.NewReader(buf)
-	sl := make([]string, 0)
-	records, err := r.ReadAll()
-	if err != nil {
-		log.Fatal(err)
-		return nil, err
+	result := make([]Result, 0)
+	for i := 0; i < len(data); i++ {
+		r := <-ch
+		result = append(result, r)
 	}
-	for _, v := range records {
-		sl = append(sl, v[0])
-	}
-	return sl, nil
+
+	c.JSON(http.StatusCreated, gin.H{
+		"result": result,
+	})
 }

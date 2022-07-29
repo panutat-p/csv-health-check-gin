@@ -9,7 +9,7 @@ var (
 	BuildTime = ""
 )
 
-func CheckHealth(c *gin.Context) {
+func Handler(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"status":    "healthy",
 		"buildTime": BuildTime,

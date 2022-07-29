@@ -27,7 +27,7 @@ func main() {
 	config.AllowHeaders = []string{"Origin", "TransactionID"}
 	r.Use(cors.New(config))
 
-	r.GET("/", health.CheckHealth)
+	r.GET("/", health.Handler)
 	r.POST("/upload", upload.Handler)
 
 	err := r.Run(fmt.Sprintf(":%d", PORT))
