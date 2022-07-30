@@ -3,6 +3,7 @@ package upload
 import (
 	"encoding/base64"
 	"github.com/gin-gonic/gin"
+	"github.com/panutat-p/line-remoteinterview-gin/color"
 	"log"
 	"net/http"
 	"time"
@@ -11,20 +12,20 @@ import (
 func Handler(c *gin.Context) {
 	start := time.Now()
 
+	txId := c.Request.Header.Get("Transaction-ID")
+
 	var file File
 	if err := c.ShouldBindJSON(&file); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
 		})
+		log.Println(color.Blue(txId), "🟨 Bad request:", err)
 		return
 	}
 
-	txId := c.Request.Header.Get("Transaction-ID")
-	log.Println("🟦 Transaction ID:", txId)
-
 	rawDecodedText, err := base64.StdEncoding.DecodeString(file.Data)
 	if err != nil {
-		log.Println("🟧 Failed to decode base64:", err)
+		log.Println(color.Blue(txId), "🟧 Failed to decode base64:", err)
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
 		})
@@ -33,7 +34,7 @@ func Handler(c *gin.Context) {
 
 	data, err := Convert(rawDecodedText)
 	if err != nil {
-		log.Println("🟧 Failed to convert CSV data:", err)
+		log.Println(color.Blue(txId), "🟧 Failed to convert CSV data:", err)
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),
 		})
@@ -65,4 +66,5 @@ func Handler(c *gin.Context) {
 		ElapsedTimeMilli: int(elapsed.Milliseconds()),
 	}
 	c.JSON(http.StatusOK, &p)
+	log.Println(color.Blue(txId), "🟩 success, elapsed time:", elapsed)
 }

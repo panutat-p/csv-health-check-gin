@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/csv"
 	"fmt"
+	"github.com/panutat-p/line-remoteinterview-gin/color"
 	"log"
 	"net/http"
 	"os"
@@ -39,12 +40,12 @@ func Check(ch chan bool, url string) {
 	if err != nil {
 		if os.IsTimeout(err) {
 			ch <- false
-			log.Println("🟨 request timeout:", err)
+			fmt.Println(color.Gray(err.Error()))
 			return
 		}
 
 		ch <- false
-		log.Println("🟨 request failed:", err)
+		fmt.Println(color.Gray(err.Error()))
 		return
 	}
 	ch <- true
