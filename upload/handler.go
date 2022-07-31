@@ -3,7 +3,8 @@ package upload
 import (
 	"encoding/base64"
 	"github.com/gin-gonic/gin"
-	"github.com/panutat-p/line-remoteinterview-gin/color"
+	"github.com/panutat-p/line-remoteinterview-gin/logging"
+	"github.com/panutat-p/line-remoteinterview-gin/upload/service"
 	"log"
 	"net/http"
 	"time"
@@ -19,22 +20,22 @@ func Handler(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
 		})
-		log.Println(color.Blue(txId), "🟨 Bad request:", err)
+		log.Println(logging.Blue(txId), "🟨 Bad request:", err)
 		return
 	}
 
 	rawDecodedText, err := base64.StdEncoding.DecodeString(file.Data)
 	if err != nil {
-		log.Println(color.Blue(txId), "🟧 Failed to decode base64:", err)
+		log.Println(logging.Blue(txId), "🟧 Failed to decode base64:", err)
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
 		})
 		return
 	}
 
-	data, err := Convert(rawDecodedText)
+	data, err := service.Convert(rawDecodedText)
 	if err != nil {
-		log.Println(color.Blue(txId), "🟧 Failed to convert CSV data:", err)
+		log.Println(logging.Blue(txId), "🟧 Failed to convert CSV data:", err)
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),
 		})
@@ -43,7 +44,7 @@ func Handler(c *gin.Context) {
 
 	ch := make(chan bool)
 	for _, v := range data {
-		go Check(ch, v)
+		go service.Check(ch, v)
 	}
 
 	var up int
@@ -66,5 +67,5 @@ func Handler(c *gin.Context) {
 		ElapsedTimeMilli: int(elapsed.Milliseconds()),
 	}
 	c.JSON(http.StatusOK, &p)
-	log.Println(color.Blue(txId), "🟩 success, elapsed time:", elapsed)
+	log.Println(logging.Blue(txId), "🟩 success, elapsed time:", elapsed)
 }
