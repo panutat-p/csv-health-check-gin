@@ -60,7 +60,7 @@ func Handler(c *gin.Context) {
 
 	elapsed := time.Since(start)
 
-	p := ResponsePayload{
+	p := Result{
 		Total:            len(data),
 		Up:               up,
 		Down:             down,
