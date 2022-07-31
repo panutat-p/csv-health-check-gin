@@ -3,7 +3,6 @@ package service
 import (
 	"fmt"
 	"github.com/panutat-p/line-remoteinterview-gin/logging"
-	"io/ioutil"
 	"net/http"
 	"os"
 	"strings"
@@ -19,7 +18,7 @@ func Check(ch chan bool, url string) {
 	c := &http.Client{
 		Timeout: TimeOut,
 	}
-	r, err := c.Get(url)
+	_, err := c.Get(url)
 	if err != nil {
 		if os.IsTimeout(err) {
 			ch <- false
@@ -31,8 +30,5 @@ func Check(ch chan bool, url string) {
 		fmt.Println(logging.Gray(err.Error()))
 		return
 	}
-	fmt.Println(r.StatusCode)
-	data, _ := ioutil.ReadAll(r.Body)
-	fmt.Println(string(data))
 	ch <- true
 }
