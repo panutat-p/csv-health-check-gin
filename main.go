@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"github.com/panutat-p/line-remoteinterview-gin/health"
-	"github.com/panutat-p/line-remoteinterview-gin/upload"
+	"github.com/panutat-p/csv-health-check-gin/health"
+	"github.com/panutat-p/csv-health-check-gin/upload"
 	"log"
 )
 

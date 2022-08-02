@@ -2,7 +2,7 @@ package service
 
 import (
 	"fmt"
-	"github.com/panutat-p/line-remoteinterview-gin/logging"
+	"github.com/panutat-p/csv-health-check-gin/logging"
 	"net/http"
 	"os"
 	"strings"

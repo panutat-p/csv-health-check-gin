@@ -1,4 +1,4 @@
-module github.com/panutat-p/line-remoteinterview-gin
+module github.com/panutat-p/csv-health-check-gin
 
 go 1.18
 

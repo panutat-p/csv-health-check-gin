@@ -3,8 +3,8 @@ package upload
 import (
 	"encoding/base64"
 	"github.com/gin-gonic/gin"
-	"github.com/panutat-p/line-remoteinterview-gin/logging"
-	"github.com/panutat-p/line-remoteinterview-gin/upload/service"
+	"github.com/panutat-p/csv-health-check-gin/logging"
+	"github.com/panutat-p/csv-health-check-gin/upload/service"
 	"log"
 	"net/http"
 	"time"
